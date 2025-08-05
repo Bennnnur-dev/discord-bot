@@ -33,6 +33,10 @@ client.on("messageCreate", message => {
       message.reply("c'est qui cody?");
       break;
     }
+    case "ruv": {
+      message.reply("je savais pas quoi dire");
+      break;
+    }
   }
 });
 
