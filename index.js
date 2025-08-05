@@ -24,10 +24,15 @@ client.on("messageCreate", async message => {
   if (message.content.includes("?") || message.content.toLowerCase().includes("ia")) {
     const res = await clientMistral.chat.complete({
       model: "mistral-large-latest",
-      messages: [{ role: "user", content: message.content }],
+      messages: [{ role: "user", content: message.content + " [REPOND AVEC MOIN DE 2000 CARACTERES]" }],
     });
+    const answer = res.choices[0].message.content;
+    if (answer.length > 1999) {
+      message.reply("Message trop long");
+      return;
+    }
 
-    message.reply(res.choices[0].message.content);
+    message.reply(answer);
     return;
   }
 
