@@ -12,9 +12,24 @@ client.once("ready", () => {
 
 client.on("messageCreate", message => {
   if (message.author.id === "1387720747367272488") return;
-  if (message.content.includes("")) {
-    message.reply(message.content + " (je te casse les couilles)");
-    message.return;
+
+  switch (message.content.toLowerCase()) {
+    case "ben": {
+      message.reply("ben le goat");
+      break;
+    }
+    case "dark": {
+      message.reply("mon petit darkinou");
+      break;
+    }
+    case "ramzi": {
+      message.reply("explose moi comme tu le fais si souvent");
+      break;
+    }
+    case "cody": {
+      message.reply("c'est qui cody?");
+      break;
+    }
   }
 });
 
