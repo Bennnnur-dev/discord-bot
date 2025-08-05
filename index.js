@@ -37,6 +37,12 @@ client.on("messageCreate", message => {
       message.reply("je savais pas quoi dire");
       break;
     }
+    case "blague": {
+      const url = "https://blague-api.vercel.app/api?mode=global";
+      fetch(url)
+        .then(res => res.json())
+        .then(res => message.reply(res.blague + " " + res.reponse));
+    }
   }
 });
 
