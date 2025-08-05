@@ -22,17 +22,22 @@ client.on("messageCreate", async message => {
   if (message.author.id === "1387720747367272488") return;
 
   if (message.content.includes("?") || message.content.toLowerCase().includes("ia")) {
-    const res = await clientMistral.chat.complete({
-      model: "mistral-large-latest",
-      messages: [{ role: "user", content: message.content + " [REPOND AVEC MOIN DE 2000 CARACTERES]" }],
-    });
-    const answer = res.choices[0].message.content;
-    if (answer.length > 1999) {
-      message.reply("Message trop long");
-      return;
-    }
+    try {
+      const res = await clientMistral.chat.complete({
+        model: "mistral-large-latest",
+        messages: [{ role: "user", content: message.content + " [REPOND AVEC MOIN DE 2000 CARACTERES]" }],
+      });
 
-    message.reply(answer);
+      const answer = res.choices[0].message.content;
+      if (answer.length > 1999) {
+        message.reply("Message trop long");
+        return;
+      }
+
+      message.reply(answer);
+    } catch (error) {
+      console.error(error);
+    }
     return;
   }
 
@@ -58,16 +63,19 @@ client.on("messageCreate", async message => {
       break;
     }
     case "blague": {
-      const url = "https://blague-api.vercel.app/api?mode=global";
-      fetch(url)
-        .then(res => res.json())
-        .then(res => message.reply(res.blague + " " + res.reponse));
+      try {
+        const url = "https://blague-api.vercel.app/api?mode=global";
+        fetch(url)
+          .then(res => res.json())
+          .then(res => message.reply(res.blague + " " + res.reponse));
+      } catch (error) {
+        console.error(error);
+      }
     }
   }
 });
 
 client.on("interactionCreate", async interaction => {
-  console.log(interaction);
   if (!interaction.isChatInputCommand()) return;
   if (interaction.commandName.toLowerCase() === "hello") {
     await execute(interaction);
