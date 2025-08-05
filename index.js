@@ -1,6 +1,11 @@
 const { Client, GatewayIntentBits } = require("discord.js");
 require("dotenv").config();
 const { execute } = require("./commands/hello");
+const { Mistral } = require("@mistralai/mistralai");
+
+const apiKey = process.env.MISTRAL_API_KEY;
+
+const clientMistral = new Mistral({ apiKey: apiKey });
 
 const express = require("express");
 const app = express();
@@ -13,8 +18,18 @@ client.once("ready", () => {
   console.log(`Logged in as ${client.user?.tag}`);
 });
 
-client.on("messageCreate", message => {
+client.on("messageCreate", async message => {
   if (message.author.id === "1387720747367272488") return;
+
+  if (message.content.includes("?") || message.content.toLowerCase().includes("ia")) {
+    const res = await clientMistral.chat.complete({
+      model: "mistral-large-latest",
+      messages: [{ role: "user", content: message.content }],
+    });
+
+    message.reply(res.choices[0].message.content);
+    return;
+  }
 
   switch (message.content.toLowerCase()) {
     case "ben": {
