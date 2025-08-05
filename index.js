@@ -1,9 +1,6 @@
 const { Client, GatewayIntentBits } = require("discord.js");
 require("dotenv").config();
 const { execute } = require("./commands/hello");
-const express = require("express");
-
-const app = express();
 
 const client = new Client({
   intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent],
@@ -43,5 +40,3 @@ client.on("interactionCreate", async interaction => {
     await execute(interaction);
   }
 });
-
-app.listen(5000, () => console.log("server listening on port 5000"));
